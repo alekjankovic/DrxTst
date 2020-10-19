@@ -1,0 +1,27 @@
+* {
+  box-sizing: border-box;
+}
+
+a:hover {
+  cursor: pointer;
+}
+
+html {
+}
+
+body {
+  margin:0;
+  color:$default-font-color;
+  font-family: 'Lato', sans-serif;
+  min-height: 100vh;
+  background-color: $gray-light;
+  overflow-y: scroll;
+}
+
+.page-cont {
+}
+
+.pg-cont-regular {
+  margin: 0 auto;
+  max-width: $width-main;
+}
