@@ -108,7 +108,7 @@ export default {
   },
   methods: {
     checkEmailInput: function(){
-      const validator = emailValidator(this.applicationToCommit.email);
+      const validator = emailValidator(this.application.email);
 
       this.helpers.emailValidation.valid = validator.valid;
       this.helpers.emailValidation.msg = validator.msg;
@@ -117,8 +117,11 @@ export default {
     },
     checkIfEmailExist: function(){
 
-      this.$store.dispatch('applications/check_email', { email: this.applicationToCommit.email }).then(() => {
-        debugger;
+      this.$store.dispatch('applications/checkEmail', { email: this.application.email }).then((email) => {
+        if(email){
+          this.helpers.emailValidation.valid = false;
+          this.helpers.emailValidation.msg = "Email already exist.";
+        }
       });
 
     },
@@ -131,14 +134,11 @@ export default {
       this.applicationToCommit.transport = this.application.transport;
       this.applicationToCommit.activity = this.application.activity;
 
-      const validator = emailValidator(this.applicationToCommit.email);
-      if (!validator.valid) return
-
       debugger;
 
-      this.$store.dispatch('applications/ssscreateApplication', { application: this.applicationToCommit }).then(() => {
-        alert("Success");
-      });
+      // this.$store.dispatch('applications/createApplication', { application: this.applicationToCommit }).then(() => {
+      //   alert("Success");
+      // });
 
     }
   }

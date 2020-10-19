@@ -1,18 +1,17 @@
 import { validateEmail } from './base.validator'
 
 export default email => {
-  debugger;
-
-  const errors = {};
+  let valid = true;
+  let msg = "Email valid."
 
   if(!email || !validateEmail(email)){
-    errors.email = true;
+    valid = false;
+    msg = "Email not valid";
   }
 
   return {
-    valid: Object.keys(errors).length === 0,
-    msg: 'Email not valid.',
-    errors: errors
+    valid: valid,
+    msg: msg
   }
 
 }
