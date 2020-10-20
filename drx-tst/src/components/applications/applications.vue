@@ -68,6 +68,11 @@
 
 
     </div>
+
+    <b-modal id="application-success" title="Message">
+      <p class="my-4">You made successfull application!</p>
+    </b-modal>
+
   </div>
 </template>
 
@@ -91,7 +96,7 @@ export default {
         datesStart: null,
         datesEnd: null,
         alsoPrefer: false,
-        transport: null,
+        transport: "own",
         activity: ""
       },
       applicationToCommit: {
@@ -100,7 +105,7 @@ export default {
         datesStart: null,
         datesEnd: null,
         alsoPrefer: false,
-        transport: null,
+        transport: "",
         activity: ""
       }
 
@@ -113,15 +118,18 @@ export default {
       this.helpers.emailValidation.valid = validator.valid;
       this.helpers.emailValidation.msg = validator.msg;
 
+      if(!this.helpers.emailValidation.valid) return;
+
       this.checkIfEmailExist();
     },
     checkIfEmailExist: function(){
 
-      this.$store.dispatch('applications/checkEmail', { email: this.application.email }).then((email) => {
-        if(email){
+      this.$store.dispatch('applications/checkEmail', { email: this.application.email }).then((data) => {
+        if(Object.keys(data.data).length !== 0){
           this.helpers.emailValidation.valid = false;
           this.helpers.emailValidation.msg = "Email already exist.";
         }
+
       });
 
     },
@@ -131,14 +139,17 @@ export default {
       this.applicationToCommit.datesStart = this.application.datesStart;
       this.applicationToCommit.datesEnd = this.application.datesEnd;
       this.applicationToCommit.alsoPrefer = this.application.alsoPrefer;
-      this.applicationToCommit.transport = this.application.transport;
-      this.applicationToCommit.activity = this.application.activity;
 
-      debugger;
+      if(!this.helpers.emailValidation.valid) return;
 
-      // this.$store.dispatch('applications/createApplication', { application: this.applicationToCommit }).then(() => {
-      //   alert("Success");
-      // });
+      if(this.applicationToCommit.alsoPrefer) {
+        this.applicationToCommit.transport = this.application.transport;
+        this.applicationToCommit.activity = this.application.activity;
+      }
+
+      this.$store.dispatch('applications/createApplication', { application: this.applicationToCommit }).then(() => {
+        this.$bvModal.show('application-success');
+      });
 
     }
   }

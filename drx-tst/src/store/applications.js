@@ -18,13 +18,12 @@ const applications = {
     }
   },
   actions: {
-    checkEmail({ commit }, email) {
+    checkEmail({ commit }, data) {
       return new Promise((resolve, reject) => {
         axios
-          .get(dataUrl + 'applications.json?shallow=true&email=' + email)
+          .get(dataUrl + 'applications.json?orderBy="email"&equalTo="' + data.email + '"')
           .then(res => {
-            debugger;
-            commit('exist_email', res.application)
+            commit('exist_email', res.data)
             resolve(res)
           })
           .catch(err => {
@@ -34,8 +33,6 @@ const applications = {
             reject(err)
           })
       })
-
-
     },
     createApplication({ commit }, data) {
       return new Promise((resolve, reject) => {
